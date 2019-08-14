@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             when
             {
-                expression  { params.REQUESTED_ACTION == 'Build' }
+                expression  { params.REQUESTED_ACTION == 'Build' || params.REQUESTED_ACTION == 'Test'}
             }
             steps {
                 sh '''dotnet restore ${SOLUTION_PATH} --source https://api.nuget.org/v3/index.json
@@ -28,6 +28,16 @@ pipeline {
             }
             steps {
                 sh'dotnet test ${TEST_PATH}'
+            }
+        }
+         stage('Deploy') {
+            when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' (1)
+              }
+            }
+            steps {
+                sh 'make publish'
             }
         }
     }
