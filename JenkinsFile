@@ -1,12 +1,20 @@
 pipeline {
     agent any
     parameters {
+        choice(
+            choices: ['Build' , 'Test'],
+            description: '',
+            name: 'REQUESTED_ACTION')
         string(name: 'REPO_PATH', defaultValue: 'https://github.com/tavisca-sgogawale/BaiscWebApplication', description: 'repository path')
         string(name: 'SOLUTION_PATH', defaultValue: 'BaiscWebApplication.sln', description: 'solution path')
         string(name: 'TEST_PATH', defaultValue: 'WebAppicationTest/WebAppicationTest.csproj', description: 'test path')
     }
     stages {
         stage('Build') {
+            when
+            {
+                expression  { params.REQUESTED_ACTION == 'Build' }
+            }
             steps {
                 sh '''dotnet restore ${SOLUTION_PATH} --source https://api.nuget.org/v3/index.json
                       dotnet build ${SOLUTION_PATH} -p:Configuration=release -v:n
@@ -14,6 +22,10 @@ pipeline {
             }
         }
         stage('Test') {
+            when
+            {
+                expression  { params.REQUESTED_ACTION == 'Test' }
+            }
             steps {
                 sh'dotnet test ${TEST_PATH}'
             }
