@@ -6,22 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BaiscWebApplication.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("hello/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class NameController : ControllerBase
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return "GreetSomeone";
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet("{name}")]
+        public string Get(string name)
         {
-            return "value";
+            return "Hello "+name;
         }
 
         // POST api/values
