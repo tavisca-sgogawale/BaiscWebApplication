@@ -37,8 +37,16 @@ pipeline {
               }
             }
             steps {
-                sh 'make publish'
+                sh 'dotnet publish'
+                sh 'dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll'
             }
+        }
+    
+    post{
+             success{
+                 archiveArtifacts artifacts: '**', fingerprint:true
+                 sh 'dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll'
+             }
         }
     }
 }
