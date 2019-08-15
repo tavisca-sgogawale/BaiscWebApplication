@@ -54,5 +54,4 @@ pipeline {
                  sh 'dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll'
              }
         }
-    }
-}
+  }
