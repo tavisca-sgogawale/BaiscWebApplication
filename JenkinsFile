@@ -9,7 +9,7 @@ pipeline {
         string(name: 'EXECUTABLE_FILE', defaultValue: 'BaiscWebApplication.dll', description: 'repository path')
         string(name: 'SOLUTION_PATH', defaultValue: 'BaiscWebApplication.sln', description: 'solution path')
         string(name: 'TEST_PATH', defaultValue: 'WebAppicationTest/WebAppicationTest.csproj', description: 'test path')
-        string(name: 'DOCKER_IMAGE', defaultValue: '', description: 'Docker image ')
+        string(name: 'DOCKER_IMAGE', defaultValue: 'testapi', description: 'Docker image ')
         string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'tag ')
         
     }
