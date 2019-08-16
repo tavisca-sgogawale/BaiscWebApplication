@@ -2,12 +2,16 @@ pipeline {
     agent any
     parameters {
         choice(
-            choices: ['Build' , 'Test','Deploy'],
+            choices: ['Build' ,'Test','Deploy','Publish'],
             description: '',
             name: 'REQUESTED_ACTION')
         string(name: 'REPO_PATH', defaultValue: 'https://github.com/tavisca-sgogawale/BaiscWebApplication', description: 'repository path')
+        string(name: 'EXECUTABLE_FILE', defaultValue: 'BaiscWebApplication.dll', description: 'repository path')
         string(name: 'SOLUTION_PATH', defaultValue: 'BaiscWebApplication.sln', description: 'solution path')
         string(name: 'TEST_PATH', defaultValue: 'WebAppicationTest/WebAppicationTest.csproj', description: 'test path')
+        string(name: 'DOCKER_IMAGE', defaultValue: '', description: 'Docker image ')
+        string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'tag ')
+        
     }
     stages 
         {
@@ -39,11 +43,18 @@ pipeline {
         {
             steps
             {
-                powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts'")
+                powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts'")              
+            }
+        }
+        stage('DockerImage')
+        {
+            steps
+            {
+                powershell(script:echo -e 'FROM mcr.microsoft.com/dotnet/core/aspnet:2.2\nWORKDIR /host \nCOPY BaiscWebApplication/artifacts /host\nEXPOSE 80\nCMD ["dotnet", "${EXECUTABLE_FILE}"]' | docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG})
               
             }
         }
-        stage(' Archive')
+        stage('Archive')
         {
             steps
             {
@@ -61,7 +72,7 @@ pipeline {
                 }
                 steps {
                    
-                    powershell(script: "dotnet BaiscWebApplication/artifacts/BaiscWebApplication.dll")
+                    powershell(script: "docker run -p 3422:80 ${DOCKER_IMAGE}:${DOCKER_TAG} ")
                 }
             }
         }
