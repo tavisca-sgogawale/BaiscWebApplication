@@ -35,11 +35,19 @@ pipeline {
                 }
             }
             
-            stage('Publis & Archive')
+            stage('Publish')
         {
             steps
             {
                 powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts'")
+              
+            }
+        }
+        stage(' Archive')
+        {
+            steps
+            {
+               
                 powershell(script: 'compress-archive BaiscWebApplication/artifacts publish.zip -Update')
                 archiveArtifacts artifacts: 'publish.zip'    
             }
@@ -57,4 +65,11 @@ pipeline {
                 }
             }
         }
+ post
+    {
+        always
+        {
+            deleteDir()
+        }
+    }
   }
