@@ -42,10 +42,18 @@ pipeline {
                 }
                 }
                 steps {
-                   powershell(script: "dotnet publish")
+                   powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts'")
                     powershell(script: "dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll")
                 }
             }
+            stage('Archive')
+        {
+            steps
+            {
+                powershell(script: 'compress-archive BaiscWebApplication/artifacts publish.zip -Update')
+                archiveArtifacts artifacts: 'publish.zip'    
+            }
+        }
         }
     
     post{
