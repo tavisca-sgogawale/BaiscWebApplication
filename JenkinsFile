@@ -52,7 +52,7 @@ pipeline {
             {
                 powershell'''
                 echo 'FROM mcr.microsoft.com/dotnet/core/aspnet:2.2`nWORKDIR /host `nCOPY BaiscWebApplication/artifacts /host`nEXPOSE 80`nCMD ["dotnet", "${EXECUTABLE_FILE}"]' > Dockerfile
-                docker build -t ${DOCKER_IMAGE}  artifacts
+                docker build -t ${DOCKER_IMAGE} -f BaiscWebApplication/artifacts
                 '''
               
             }
