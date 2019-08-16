@@ -52,18 +52,6 @@ pipeline {
                 archiveArtifacts artifacts: 'publish.zip'    
             }
         }
-        stage('Deploy') 
-            {
-                when {
-                expression {
-                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
-                }
-                }
-                steps {
-                   
-                    powershell(script: "dotnet BaiscWebApplication/artifacts/BaiscWebApplication.dll")
-                }
-            }
         }
  post
     {
