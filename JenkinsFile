@@ -43,7 +43,7 @@ pipeline {
         {
             steps
             {
-                powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts'")              
+                powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts")              
             }
         }
         stage('DockerImage')
