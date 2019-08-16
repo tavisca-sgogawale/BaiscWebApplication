@@ -50,7 +50,10 @@ pipeline {
         {
             steps
             {
-                powershell(script:echo -e 'FROM mcr.microsoft.com/dotnet/core/aspnet:2.2\nWORKDIR /host \nCOPY BaiscWebApplication/artifacts /host\nEXPOSE 80\nCMD ["dotnet", "${EXECUTABLE_FILE}"]' | docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG})
+                powershell'''
+                echo 'FROM mcr.microsoft.com/dotnet/core/aspnet:2.2`nWORKDIR /host `nCOPY BaiscWebApplication/artifacts /host`nEXPOSE 80`nCMD ["dotnet", "${EXECUTABLE_FILE}"]' > Dockerfile
+                docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG}
+                '''
               
             }
         }
