@@ -19,9 +19,9 @@ pipeline {
                     expression  { params.REQUESTED_ACTION == 'Build' || params.REQUESTED_ACTION == 'Test'}
                 }
                 steps {
-                    sh '''dotnet restore ${SOLUTION_PATH} --source https://api.nuget.org/v3/index.json
-                        dotnet build ${SOLUTION_PATH} -p:Configuration=release -v:n
-                        '''
+                    powershell(script: "dotnet restore ${SOLUTION_PATH} --source https://api.nuget.org/v3/index.json")
+                    powershell(script: "dotnet build ${SOLUTION_PATH} -p:Configuration=release -v:n")
+                     
                 }
             }
             stage('Test') 
@@ -31,7 +31,7 @@ pipeline {
                     expression  { params.REQUESTED_ACTION == 'Test' }
                 }
                 steps {
-                    sh'dotnet test ${TEST_PATH}'
+                    powershell(script: "dotnet test ${TEST_PATH}")
                 }
             }
             stage('Deploy') 
@@ -42,8 +42,8 @@ pipeline {
                 }
                 }
                 steps {
-                    sh 'dotnet publish'
-                    sh 'dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll'
+                   powershell(script: "dotnet publish")
+                    powershell(script: "dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll")
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
     post{
              success{
                  archiveArtifacts artifacts: '**', fingerprint:true
-                 sh 'dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll'
+                 powershell(script: "dotnet BaiscWebApplication/bin/Release/netcoreapp2.2/BaiscWebApplication.dll")
              }
         }
   }
