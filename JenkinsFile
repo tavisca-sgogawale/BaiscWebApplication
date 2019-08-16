@@ -52,7 +52,7 @@ pipeline {
             {
                 powershell'''
                 echo 'FROM mcr.microsoft.com/dotnet/core/aspnet:2.2`nWORKDIR /host `nCOPY BaiscWebApplication/artifacts /host`nEXPOSE 80`nCMD ["dotnet", "${EXECUTABLE_FILE}"]' > Dockerfile
-                docker build -t testapi:v0.1 -f BaiscWebApplication/artifacts
+                app = docker.build("getintodevops/hellonode")
                 '''
               
             }
