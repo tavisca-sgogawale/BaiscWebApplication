@@ -11,7 +11,7 @@ pipeline {
         string(name: 'BUILD_VERSION', defaultValue: '0.0', description: 'repository path')
         string(name: 'SOLUTION_PATH', defaultValue: 'BaiscWebApplication.sln', description: 'solution path')
         string(name: 'TEST_PATH', defaultValue: 'WebAppicationTest/WebAppicationTest.csproj', description: 'test path')
-        string(name: 'DOCKER_IMAGE', defaultValue: 'testapi:v0.1', description: 'Docker image ')
+        string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'docker-hub-cred')
        
         
     }
@@ -59,7 +59,7 @@ pipeline {
                         ENV NAME ${Project_Name}\n
                         CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
                 powershell''''
-                docker build  --tag=${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
+                docker build  --tag=sgogawale/${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
                 '''
               
             }
@@ -68,10 +68,19 @@ pipeline {
         {
             steps
             {
-               powershell'''
-                docker tag ${PROJECT_NAME}:${BUILD_VERSION} sgogawale/${PROJECT_NAME}:${BUILD_VERSION}
-                 docker push sgogawale/gets-stared:part2
+                script
+                {
+                docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
+                    {
+                        
+                        powershell'''
+                            
+                            docker push sgogawale/gets-stared:part2
+
                  '''
+                    }
+                }
+                 
                  
             }
         }
