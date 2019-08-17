@@ -53,7 +53,11 @@ pipeline {
             steps
             {
                 powershell'''
-                echo "FROM mcr.microsoft.com/dotnet/core/aspnet:2.2\nWORKDIR /host \nCOPY BaiscWebApplication/artifacts /host\nEXPOSE 80\nCMD ['dotnet', ${EXECUTABLE_FILE}]" > Dockerfile
+                //echo "FROM mcr.microsoft.com/dotnet/core/aspnet:2.2\nWORKDIR /host \nCOPY BaiscWebApplication/artifacts /host\nEXPOSE 80\nCMD ['dotnet', ${EXECUTABLE_FILE}]" > Dockerfile
+                writeFile file: 'BaiscWebApplication/artifacts/Dockerfile', text: '''
+                        FROM mcr.microsoft.com/dotnet/core/aspnet\n
+                        ENV NAME ${Project_Name}\n
+                        CMD ["dotnet", "${SOLUTION_DLL_FILE}"]\n'''
                 mv Dockerfile BaiscWebApplication/artifacts
                 docker build  --tag=${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
                 '''
