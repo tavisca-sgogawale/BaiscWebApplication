@@ -75,7 +75,7 @@ pipeline {
                         
                         powershell'''
                             
-                            docker push sgogawale/gets-stared:part2
+                            docker push sgogawale/${PROJECT_NAME}:${BUILD_VERSION}
 
                  '''
                     }
