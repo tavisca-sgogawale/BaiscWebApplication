@@ -48,7 +48,7 @@ pipeline {
                 powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts")              
             }
         }
-        stage('DockerImage')
+        stage('CreateDockerImage')
         {
             steps
             {
@@ -56,21 +56,23 @@ pipeline {
                
                 writeFile file: 'BaiscWebApplication/artifacts/Dockerfile', text: '''
                         FROM mcr.microsoft.com/dotnet/core/aspnet\n
-                        ENV NAME $PROJECT_NAME\n
-                        CMD ["dotnet", ${EXECUTABLE_FILE}]\n'''
+                        ENV NAME ${Project_Name}\n
+                        CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
                 powershell''''
                 docker build  --tag=${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
                 '''
               
             }
         }
-        stage('Archive')
+        stage('PushDockerImage')
         {
             steps
             {
-               
-                powershell(script: 'compress-archive BaiscWebApplication/artifacts publish.zip -Update')
-                archiveArtifacts artifacts: 'publish.zip'    
+               powershell'''
+                docker tag ${PROJECT_NAME}:${BUILD_VERSION} sgogawale/gets-stared:2.2
+                 docker push sgogawale/gets-stared:part2
+                 '''
+                 
             }
         }
         stage('Deploy') 
