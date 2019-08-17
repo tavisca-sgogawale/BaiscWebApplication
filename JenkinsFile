@@ -11,7 +11,8 @@ pipeline {
         string(name: 'BUILD_VERSION', defaultValue: '0.0', description: 'repository path')
         string(name: 'SOLUTION_PATH', defaultValue: 'BaiscWebApplication.sln', description: 'solution path')
         string(name: 'TEST_PATH', defaultValue: 'WebAppicationTest/WebAppicationTest.csproj', description: 'test path')
-        string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'docker-hub-cred')
+        string(name: 'DOCKER_HUB_USERNAME', defaultValue: 'sgogawale')
+        string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'docker-hub-credentials')
        
         
     }
