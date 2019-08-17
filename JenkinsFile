@@ -12,7 +12,7 @@ pipeline {
         string(name: 'SOLUTION_PATH', defaultValue: 'BaiscWebApplication.sln', description: 'solution path')
         string(name: 'TEST_PATH', defaultValue: 'WebAppicationTest/WebAppicationTest.csproj', description: 'test path')
         string(name: 'DOCKER_HUB_USERNAME', defaultValue: 'sgogawale')
-        string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'docker-hub-credentials')
+        string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'DOCKER_HUB_CREDENTIALS_ID')
        
         
     }
@@ -60,7 +60,7 @@ pipeline {
                         ENV NAME ${Project_Name}\n
                         CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
                 powershell''''
-                docker build  --tag=${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
+                docker build --tag=${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
                 '''
               
             }
