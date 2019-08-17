@@ -61,6 +61,7 @@ pipeline {
                         CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
                 powershell''''
                 docker build --tag=${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
+                 docker image ls
                 '''
               
             }
