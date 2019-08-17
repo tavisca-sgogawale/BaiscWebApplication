@@ -56,7 +56,7 @@ pipeline {
                
                 writeFile file: 'BaiscWebApplication/artifacts/Dockerfile', text: '''
                         FROM mcr.microsoft.com/dotnet/core/aspnet\n
-                        ENV NAME ${PROJECT_NAME}\n
+                        ENV NAME $PROJECT_NAME\n
                         CMD ["dotnet", ${EXECUTABLE_FILE}]\n'''
                 powershell''''
                 docker build  --tag=${PROJECT_NAME}:${BUILD_VERSION} "WebApi/bin/Debug/netcoreapp2.2/artifacts/"
