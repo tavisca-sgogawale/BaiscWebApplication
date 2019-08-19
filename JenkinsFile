@@ -62,7 +62,7 @@ pipeline {
                 writeFile file: 'BaiscWebApplication/artifacts/Dockerfile', text: '''
                         FROM mcr.microsoft.com/dotnet/core/aspnet\n
                         ENV NAME ${Project_Name}\n
-                        CMD ["dotnet", "${env.EXECUTABLE_FILE}"]\n'''
+                        CMD ["dotnet", ${env.EXECUTABLE_FILE}]\n'''
                 
                 powershell "docker build -t ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION} BaiscWebApplication/artifacts/ "
               
@@ -74,7 +74,7 @@ pipeline {
             {
                 script
                 {
-                docker.withRegistry('https://www.docker.com/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
+                docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
                     {      
                      powershell "docker push ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION}"
 
