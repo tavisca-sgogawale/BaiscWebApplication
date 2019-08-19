@@ -64,7 +64,7 @@ pipeline {
                         ENV NAME ${Project_Name}\n
                         CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
                 powershell''''
-                 app = docker.build("${PROJECT_NAME}:${BUILD_VERSION}")
+                 docker build -t sgogawale/${PROJECT_NAME}:${BUILD_VERSION} BaiscWebApplication/artifacts/ 
                
                  docker image ls
                 '''
