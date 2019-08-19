@@ -1,5 +1,5 @@
 pipeline {
-   def app
+   
     agent any
     parameters {
         choice(
@@ -19,7 +19,9 @@ pipeline {
     }
     stages 
         {
-
+            
+            
+            
             stage('Build') 
             {
                 when
@@ -52,6 +54,7 @@ pipeline {
         }
         stage('CreateDockerImage')
         {
+            def app
             steps
             {
                
