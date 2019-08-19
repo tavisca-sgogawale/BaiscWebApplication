@@ -78,7 +78,7 @@ pipeline {
                     {
                      powershell "docker image ls"
                    
-                   powershell "docker push ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION}"
+                   powershell "docker push ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}"
 
                     }
                 }
