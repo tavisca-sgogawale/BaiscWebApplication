@@ -64,9 +64,7 @@ pipeline {
                         ENV NAME ${Project_Name}\n
                         CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
                 
-                powershell '''
-                 docker build -t sgogawale/${PROJECT_NAME}:${BUILD_VERSION} BaiscWebApplication/artifacts/ 
-                '''
+                powershell "docker build -t sgogawale/${env.PROJECT_NAME}:${env.BUILD_VERSION} BaiscWebApplication/artifacts/ "
               
             }
         }
