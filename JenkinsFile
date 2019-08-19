@@ -74,11 +74,9 @@ pipeline {
             {
                 script
                 {
-                docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
-                    {
-                     powershell "docker image ls"
-                   
-                   powershell "docker push ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}"
+                docker.withRegistry('https://www.docker.com/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
+                    {      
+                     powershell "docker push ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME:${env.BUILD_VERSION}}"
 
                     }
                 }
