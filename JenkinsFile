@@ -76,7 +76,7 @@ pipeline {
                 {
                 docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
                     {      
-                     powershell "docker login -u ${env.DOCKER_HUB_USERNAME} -p mh12sg09"
+                     powershell "docker login ${env.DOCKER_HUB_CREDENTIALS_ID}"
                      powershell "docker push docker.io/${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION}"
 
                     }
