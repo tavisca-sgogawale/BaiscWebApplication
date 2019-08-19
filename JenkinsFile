@@ -64,7 +64,7 @@ pipeline {
                         ENV NAME ${Project_Name}\n
                         CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
                 
-                powershell "docker build -t sgogawale/${env.PROJECT_NAME}:${env.BUILD_VERSION} BaiscWebApplication/artifacts/ "
+                powershell "docker build -t ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION} BaiscWebApplication/artifacts/ "
               
             }
         }
@@ -78,7 +78,7 @@ pipeline {
                     {
                      powershell "docker image ls"
                    
-                   powershell "docker push sgogawale/${env.PROJECT_NAME}:${env.BUILD_VERSION}"
+                   powershell "docker push ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION}"
 
                     }
                 }
