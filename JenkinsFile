@@ -77,9 +77,8 @@ pipeline {
                 docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
                     {
                      powershell "docker image ls"
-                   powershell "docker tag  '${PROJECT_NAME}:${BUILD_VERSION}'  'sgogawale/${PROJECT_NAME}:${BUILD_VERSION}'"
                    
-                   powershell "docker push sgogawale/${PROJECT_NAME}:${BUILD_VERSION}"
+                   powershell "docker push sgogawale/${env.PROJECT_NAME}:${env.BUILD_VERSION}"
 
                     }
                 }
@@ -96,7 +95,7 @@ pipeline {
                 }
                 steps {
                    
-                    powershell(script: "docker run -p 3422:80 ${DOCKER_IMAGE}:${DOCKER_TAG} ")
+                    powershell(script: "docker run -p 3422:80 ${env.PROJECT_NAME}:${env.BUILD_VERSION} ")
                 }
             }
         }
