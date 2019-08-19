@@ -54,7 +54,7 @@ pipeline {
         }
         stage('CreateDockerImage')
         {
-            def app
+           
             steps
             {
                
