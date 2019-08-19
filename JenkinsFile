@@ -89,6 +89,7 @@ pipeline {
         stage('Deploy') 
             {        
                 steps {
+                     powershell "docker login -u ${env.DOCKER_HUB_USERNAME} -p 'mh12sg09' "
                     powershell(script: "docker run -p 3422:80 ${env.PROJECT_NAME}:${env.BUILD_VERSION} ")
                 }
             }
