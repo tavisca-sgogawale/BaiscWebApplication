@@ -89,8 +89,13 @@ pipeline {
         stage('Deploy') 
             {        
                 steps {
+                script
+                {
+                docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
+                    { 
                      powershell "docker login -u ${env.DOCKER_HUB_USERNAME} -p 'mh12sg09' "
                     powershell(script: "docker run -p 3422:80 ${env.PROJECT_NAME}:${env.BUILD_VERSION} ")
+                    }
                 }
             }
         }
