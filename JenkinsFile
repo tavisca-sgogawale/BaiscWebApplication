@@ -1,4 +1,5 @@
 pipeline {
+   
     agent any
     parameters {
         choice(
@@ -12,13 +13,16 @@ pipeline {
         string(name: 'SOLUTION_PATH', defaultValue: 'BaiscWebApplication.sln', description: 'solution path')
         string(name: 'TEST_PATH', defaultValue: 'WebAppicationTest/WebAppicationTest.csproj', description: 'test path')
         string(name: 'DOCKER_HUB_USERNAME', defaultValue: 'sgogawale')
+        password(name: 'DOCKER_HUB_PASSWORD', defaultValue: '')
         string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'DOCKER_HUB_CREDENTIALS_ID')
        
         
     }
     stages 
         {
-
+            
+            
+            
             stage('Build') 
             {
                 when
@@ -35,8 +39,6 @@ pipeline {
             {
                 when
                 {
-                
-                
                     expression  { params.REQUESTED_ACTION == 'Test' }
                 }
                 steps {
@@ -53,6 +55,7 @@ pipeline {
         }
         stage('CreateDockerImage')
         {
+           
             steps
             {
                
@@ -60,11 +63,9 @@ pipeline {
                 writeFile file: 'BaiscWebApplication/artifacts/Dockerfile', text: '''
                         FROM mcr.microsoft.com/dotnet/core/aspnet\n
                         ENV NAME ${Project_Name}\n
-                        CMD ["dotnet", "${EXECUTABLE_FILE}"]\n'''
-                powershell''''
-                docker build --tag=${PROJECT_NAME}:${BUILD_VERSION} BaiscWebApplication/artifacts/
-                 docker image ls
-                '''
+                        CMD ["dotnet", ${env.EXECUTABLE_FILE}]\n'''
+                
+                powershell "docker build -t ${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION} BaiscWebApplication/artifacts/ "
               
             }
         }
@@ -75,11 +76,9 @@ pipeline {
                 script
                 {
                 docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
-                    {
-                     powershell "docker image ls"
-                   powershell "docker tag  ${PROJECT_NAME}:${BUILD_VERSION}  sgogawale/{PROJECT_NAME}:${BUILD_VERSION}"
-                   
-                   powershell "docker push sgogawale/${PROJECT_NAME}:${BUILD_VERSION}"
+                    {      
+                     powershell "docker login -u ${env.DOCKER_HUB_USERNAME} -p mh12sg09 "
+                     powershell "docker push docker.io/${env.DOCKER_HUB_USERNAME}/${env.PROJECT_NAME}:${env.BUILD_VERSION}"
 
                     }
                 }
@@ -88,15 +87,15 @@ pipeline {
             }
         }
         stage('Deploy') 
-            {
-                when {
-                expression {
-                     params.REQUESTED_ACTION == 'Deploy' && currentBuild.result == 'SUCCESS'
-                }
-                }
+            {        
                 steps {
-                   
-                    powershell(script: "docker run -p 3422:80 ${DOCKER_IMAGE}:${DOCKER_TAG} ")
+                script
+                {
+                docker.withRegistry('https://www.docker.io/', "${env.DOCKER_HUB_CREDENTIALS_ID}") 
+                    { 
+                     powershell "docker login -u ${env.DOCKER_HUB_USERNAME} -p 'mh12sg09' "
+                    powershell(script: "docker run -p 3422:80 ${env.PROJECT_NAME}:${env.BUILD_VERSION} ")
+                    }
                 }
             }
         }
