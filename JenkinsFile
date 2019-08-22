@@ -30,6 +30,7 @@ pipeline {
                     expression  { params.REQUESTED_ACTION == 'Build' || params.REQUESTED_ACTION == 'Test'}
                 }
                 steps {
+                    powershell(script: 'dotnet C:/sonar/SonarScanner.MSBuild.dll begin /k:"api" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="f684nh0f1ad53a8ca410fc75bh39n12685shuw54"'
                     powershell(script: "dotnet restore ${SOLUTION_PATH} --source https://api.nuget.org/v3/index.json")
                     powershell(script: "dotnet build ${SOLUTION_PATH} -p:Configuration=release -v:n")
                      
@@ -50,6 +51,7 @@ pipeline {
         {
             steps
             {
+                powershell(script: 'dotnet c:/sonar/SonarScanner.MSBuild.dll end /d:sonar.login="f684nh0f1ad53a8ca410fc75bh39n12685shuw54"')
                 powershell(script: "dotnet publish BaiscWebApplication -c Release -o artifacts")              
             }
         }
