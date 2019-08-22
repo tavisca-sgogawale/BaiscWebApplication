@@ -16,6 +16,8 @@ pipeline {
         password(name: 'DOCKER_HUB_PASSWORD', defaultValue: '')
         string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'DOCKER_HUB_CREDENTIALS_ID')
        
+       
+       
         
     }
     stages 
